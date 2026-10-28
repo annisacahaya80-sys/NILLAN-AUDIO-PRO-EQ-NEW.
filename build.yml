@@ -1,0 +1,37 @@
+name: Build NILLAN AUDIO PRO EQ
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build APK
+        run: |
+          mkdir proyek
+          unzip -o NILLAN_AUDIO_PRO_EQ_NEW_COMPLETE.zip -d proyek
+          DIR=$(find proyek -name settings.gradle -printf '%h\n' | head -n 1)
+          cd "$DIR"
+          gradle assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: NILLAN-AUDIO-PRO-EQ-APK
+          path: proyek/**/build/outputs/apk/debug/*.apk
