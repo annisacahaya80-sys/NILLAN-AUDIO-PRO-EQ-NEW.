@@ -1,6 +1,5 @@
 name: Build NILLAN AUDIO PRO EQ
-
-on:
+"on":
   workflow_dispatch:
   push:
     branches:
